@@ -1,14 +1,24 @@
 <?php
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "db_warkop";
+$hostname = "localhost";
 
-$conn = mysqli_connect($host, $user, $pass, $db);
+/* konfigurasi MySQL */
+$user_db = "root";
+$pass_db = "";
+$db_name = "db_warkop"; 
 
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+/* membuat koneksi */
+$conn = new mysqli($hostname, $user_db, $pass_db);
+
+/* cek koneksi */
+if ($conn->connect_error) {
+
+    die("Connection failed : " . $conn->connect_error);
+
+} else {
+
+    mysqli_select_db($conn, $db_name);
+
 }
 
 ?>
