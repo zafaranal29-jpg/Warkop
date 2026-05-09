@@ -1,0 +1,239 @@
+body {
+    background: hsl(0, 0%, 10%);
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 360px;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #656262, #1a1a1a);
+    color: white;
+    padding: 23px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgb(116, 111, 111);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ICON BOX */
+.icon-box {
+    background: #2a2a2a;
+    padding: 8px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* LOGO */
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    background: white;
+    color: black;
+    font-weight: bold;
+    padding: 8px 10px;
+    border-radius: 10px;
+}
+
+/* SEARCH */
+.header input {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+    outline: none;
+}
+
+/* BANNER */
+.banner {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #656262, #1a1a1a);
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 8px 20px rgb(116, 111, 111);
+}
+
+.badge {
+    background: #2a2a2a;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.banner button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* TITLE */
+.judul {
+    margin-top: 20px;
+    color: white;
+}
+
+/* FILTER */
+.filter {
+    margin: 10px 0;
+}
+
+.filter button {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    background: #e0e0e0;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.filter .active {
+    background: black;
+    color: white;
+}
+
+/* CARD */
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    position: relative; /* penting untuk popup */
+}
+
+/* IMAGE */
+.img {
+    width: 65px;
+    height: 65px;
+    background: #ddd;
+    border-radius: 15px;
+    position: relative;
+}
+
+/* RATING */
+.rating {
+    position: absolute;
+    bottom: -5px;
+    left: 5px;
+    background: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+/* INFO */
+.info {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.info p {
+    font-size: 12px;
+    color: gray;
+    margin: 4px 0;
+}
+
+/* BUTTON */
+.btn {
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* ===================== */
+/* POPUP */
+/* ===================== */
+
+.popup {
+    display: none;
+    position: absolute;
+    bottom: -80px;
+    left: 10px;
+    right: 10px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    text-align: center;
+    z-index: 10;
+    animation: fadeIn 0.6s ease;
+}
+
+.popup.show {
+    display: block;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* QTY CONTROL */
+.qty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.qty span {
+    font-weight: bold;
+    min-width: 20px;
+    display: inline-block;
+}
+
+.qty button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    background: black;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.qty button:hover {
+    opacity: 0.8;
+}
