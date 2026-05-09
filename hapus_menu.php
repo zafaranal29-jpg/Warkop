@@ -1,37 +1,60 @@
 <?php
+
 include 'koneksi.php';
 
-if (isset($_GET['id'])) {
+// ==========================
+// CEK ID MENU
+// ==========================
+if(isset($_GET['id'])){
+
+    // AMBIL ID MENU
     $id_menu = $_GET['id'];
 
-    // Memulai transaksi agar jika salah satu gagal, database tetap aman
-    mysqli_begin_transaction($conn);
+    // ==========================
+    // QUERY HAPUS MENU
+    // ==========================
+    $hapus = mysqli_query($conn, "
+        DELETE FROM menu
+        WHERE id_menu='$id_menu'
+    ");
 
-    try {
-        // 1. Hapus data di tabel detail_pesanan yang merujuk ke id_menu ini
-        $query1 = "DELETE FROM detail_pesanan WHERE id_menu = ?";
-        $stmt1 = mysqli_prepare($conn, $query1);
-        mysqli_stmt_bind_param($stmt1, "i", $id_menu);
-        mysqli_stmt_execute($stmt1);
+    // ==========================
+    // JIKA BERHASIL
+    // ==========================
+    if($hapus){
 
-        // 2. Hapus data di tabel menu
-        $query2 = "DELETE FROM menu WHERE id_menu = ?";
-        $stmt2 = mysqli_prepare($conn, $query2);
-        mysqli_stmt_bind_param($stmt2, "i", $id_menu);
-        mysqli_stmt_execute($stmt2);
+        echo "
+        <script>
 
-        // Jika semua berhasil, simpan perubahan
-        mysqli_commit($conn);
-        header("Location: stok_barang.php?status=sukses");
-        exit();
+            alert('Menu berhasil dihapus!');
 
-    } catch (mysqli_sql_exception $exception) {
-        // Jika ada error, batalkan semua perubahan
-        mysqli_rollback($conn);
-        echo "Gagal menghapus menu: " . $exception->getMessage();
+            window.location.href =
+                'stok_barang.php';
+
+        </script>
+        ";
+
+    }else{
+
+        echo "
+        <script>
+
+            alert('Menu gagal dihapus!');
+
+            window.location.href =
+                'stok_barang.php';
+
+        </script>
+        ";
     }
-} else {
-    header("Location: stok_barang.php");
+
+}else{
+
+    header(
+        'Location: stok_barang.php'
+    );
+
     exit();
 }
+
 ?>
