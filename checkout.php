@@ -97,17 +97,16 @@
         </div>
     </div>
 
+
     <script>
     // 1. Fungsi untuk menampilkan daftar pesanan dari localStorage
     function renderCheckout() {
-        // Data Dummy jika localStorage kosong (untuk testing)
         const dummyPesanan = [{
             nama: "Kopi Royal",
             jumlah: 1,
             harga: 12000
         }];
-        const keranjang =
-            JSON.parse(localStorage.getItem("keranjang")) || dummyPesanan;
+        const keranjang = JSON.parse(localStorage.getItem("keranjang")) || dummyPesanan;
         const daftarPesananElemen = document.getElementById("daftar-pesanan");
 
         let subtotal = 0;
@@ -129,22 +128,15 @@
         </div>`;
         });
 
-        // Hitung Pajak & Total
-        const ppn = subtotal * 0.1; // 10%
+        const ppn = subtotal * 0.1;
         const total = subtotal + ppn;
 
-        // Tampilkan ke UI
-        document.getElementById("subtotal").innerText =
-            `Rp ${subtotal.toLocaleString("id-ID")}`;
-        document.getElementById("ppn").innerText =
-            `Rp ${ppn.toLocaleString("id-ID")}`;
-        document.getElementById("total-akhir").innerText =
-            `Rp ${total.toLocaleString("id-ID")}`;
-        document.getElementById("total-btn").innerText =
-            `Rp ${total.toLocaleString("id-ID")}`;
+        document.getElementById("subtotal").innerText = `Rp ${subtotal.toLocaleString("id-ID")}`;
+        document.getElementById("ppn").innerText = `Rp ${ppn.toLocaleString("id-ID")}`;
+        document.getElementById("total-akhir").innerText = `Rp ${total.toLocaleString("id-ID")}`;
+        document.getElementById("total-btn").innerText = `Rp ${total.toLocaleString("id-ID")}`;
     }
 
-    // Jalankan render saat halaman dimuat
     document.addEventListener("DOMContentLoaded", renderCheckout);
 
     // 2. Logika Modal dan Konfirmasi Pembayaran
@@ -153,39 +145,31 @@
     const btnKonfirmasi = document.getElementById("btn-konfirmasi");
 
     btnKonfirmasi.addEventListener("click", function() {
-        // Ambil input dari user
+        // Ambil input dari user (ID: nama, meja)
         const namaUser = document.getElementById("nama").value;
         const mejaUser = document.getElementById("meja").value;
-        const metodeInput = document.querySelector(
-            'input[name="payment"]:checked',
-        );
+        const metodeInput = document.querySelector('input[name="payment"]:checked');
 
-        // Validasi agar data tidak kosong
+        // Validasi
         if (!namaUser || !mejaUser) {
             alert("Mohon isi Nama dan Nomor Meja!");
             return;
         }
 
-        // Simpan data ke localStorage untuk digunakan di halaman Struk
+        // Ambil nilai metode dan total (ID: total-akhir)
+        const metode = metodeInput.value;
+        const totalHargaRaw = document.getElementById("total-akhir").innerText;
+        const totalHarga = totalHargaRaw.replace(/[^0-9]/g, ""); // Hanya ambil angka
+        const keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
+
+        // Simpan ke localStorage untuk struk
         localStorage.setItem("nomorMeja", mejaUser);
         localStorage.setItem("namaPemesan", namaUser);
-        localStorage.setItem(
-            "waktuTransaksi",
-            new Date().toLocaleString("id-ID", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            }),
-        );
+        localStorage.setItem("waktuTransaksi", new Date().toLocaleString("id-ID"));
 
-        // --- TAMBAHAN KODE UNTUK DATABASE ---
-        const keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
-        const totalHarga = document.getElementById("total-akhir").innerText.replace(/[^0-9]/g, "");
-
-        // Kirim data ke file PHP proses
-        fetch('proses_simpan.php', {
+        // --- PROSES KIRIM KE DATABASE ---
+        console.log("Mengirim data ke database...");
+        fetch('proses_simpan_checkout.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -195,16 +179,14 @@
                     'meja': mejaUser,
                     'metode': metode,
                     'total': totalHarga,
-                    'pesanan': JSON.stringify(keranjang) // Mengirim detail item sebagai JSON
+                    'pesanan': JSON.stringify(keranjang)
                 })
             })
             .then(response => response.text())
-            .then(res => console.log("Data tersimpan:", res))
+            .then(res => console.log("Respon Server:", res))
             .catch(err => console.error("Gagal simpan database:", err));
-        // --- AKHIR TAMBAHAN ---
 
-        // Logika konten Pop-up berdasarkan metode
-        const metode = metodeInput.value;
+        // Logika konten Pop-up Modal
         const imgInstruksi = document.getElementById("img-instruksi");
         const teksInstruksi = document.getElementById("teks-instruksi");
 
@@ -219,23 +201,23 @@
             teksInstruksi.innerText = "Silahkan menuju kasir";
         }
 
-        // Tampilkan Modal
         modal.style.display = "block";
     });
 
-    // 3. Fungsi Menutup Modal & Langsung Pindah ke Halaman Struk
+    // 3. Fungsi Menutup Modal & Pindah ke Struk
     closeBtn.onclick = function() {
         modal.style.display = "none";
-        window.location.href = "halaman struk.html"; // Pastikan nama file strukmu sesuai
+        window.location.href = "halaman struk.php";
     };
 
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
-            window.location.href = "halaman struk.html"; // Pindah ke struk jika klik di luar modal
+            window.location.href = "halaman struk.php";
         }
     };
     </script>
+
 </body>
 
 </html>
