@@ -1,0 +1,96 @@
+/* BODY */
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #e5e5e5;
+  display: flex;
+  justify-content: center;
+}
+
+/* CONTAINER */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(#0f172a,#1e293b);
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* BUTTON LOGIN */
+.btn-login {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px;
+  font-size: 8px;
+  border: none;
+  border-radius: 12px;
+  background: yellow;
+  font-weight: bold;
+}
+
+/* SUBTITLE */
+.subtitle {
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* RATING */
+.rating {
+  margin: 10px 0;
+  color: gold;
+}
+
+.rating span {
+  color: white;
+}
+
+/* CARD */
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: left;
+}
+
+/* FITUR */
+.fitur {
+  margin-top: 10px;
+}
+
+.fitur p {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* TIPS */
+.tips {
+  background: rgba(255,200,0,0.1);
+  border: 1px solid gold;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 15px 0;
+  font-size: 12px;
+}
+
+/* BUTTON ORDER */
+.btn-order {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: rgb(1, 244, 54);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 15px;
+  font-size: 8px;
+  color: #aaa;
+}

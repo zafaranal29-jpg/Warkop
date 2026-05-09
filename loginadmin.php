@@ -37,17 +37,19 @@
         <h2>Login Admin</h2>
         <p>Masuk untuk mengelola pesanan Warkop SDB</p>
 
-        <form>
+    <form action="dashboard_admin.php" method="POST">
 
-            <label>Username</label>
-            <input type="text" placeholder="Masukkan username">
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Masukkan username">
 
-            <label>Password</label>
-            <input type="password" placeholder="Masukkan password">
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Masukkan password">
 
-            <button type="submit">Login</button>
+    <div>
+        <button type="submit">Login</button>
+    </div>
 
-        </form>
+</form>
 
         <small>Hanya untuk admin</small>
 

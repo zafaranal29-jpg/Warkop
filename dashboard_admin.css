@@ -1,0 +1,119 @@
+/* --- 1. Dasar & Tema Gelap --- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0d1117; /* Hitam pekat */
+    color: #e6edf3;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- 2. Header / Navbar (Biru Tua) --- */
+.header {
+    background-color: #0a192f; /* Biru tua gelap */
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #30363d;
+}
+
+/* TITLE & SUBTITLE */
+.title {
+    margin: 0;
+    color: #58a6ff; /* Biru cerah */
+    font-size: 22px;
+}
+
+.subtitle {
+    margin: 0;
+    color: #8b949e;
+    font-size: 13px;
+}
+
+/* PROFILE SECTION */
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-name {
+    color: #e6edf3;
+    font-weight: bold;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #30363d;
+    object-fit: cover;
+}
+
+/* LOGOUT BUTTON */
+.btn-logout {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #da3633; /* Merah gelap */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    background: #f85149;
+}
+
+/* --- 3. MENU SECTION --- */
+.menu {
+    flex: 1; /* Agar footer tetap di bawah */
+    padding: 50px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* MENU BUTTON (Bentuk Tabel/Card) */
+.menu-btn {
+    width: 100%;
+    padding: 35px;
+    background: #161b22; /* Hitam abu-abu */
+    color: #58a6ff;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-btn:hover {
+    background: #1c2128;
+    border-color: #58a6ff;
+    transform: translateY(-3px); /* Efek melayang */
+}
+
+/* --- 4. FOOTER --- */
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    font-size: 10px;
+    color: #8b949e;
+    background: #0d1117;
+    border-top: 1px solid #30363d;
+    box-sizing: border-box;
+}
+
+.footer p {
+    margin: 5px 0;
+}

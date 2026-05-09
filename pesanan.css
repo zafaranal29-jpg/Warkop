@@ -101,3 +101,41 @@ body {
     font-size: 12px;
     text-align: center;
 }
+
+/* FILTER */
+.filter {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.filter a {
+    text-decoration: none;
+}
+
+/* BUTTON */
+.filter button {
+    border: none;
+    padding: 12px 22px;
+    border-radius: 15px;
+    background: #2b2b2b;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(255,255,255,0.08);
+}
+
+/* HOVER */
+.filter button:hover {
+    background: #3b3b3b;
+    transform: translateY(-2px);
+}
+
+/* ACTIVE */
+.filter button.active {
+    background: linear-gradient(135deg, #ffffff, #dcdcdc);
+    color: black;
+}

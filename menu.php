@@ -21,7 +21,9 @@ $query = mysqli_query($conn, "SELECT * FROM menu");
 
         <div class="header-top">
 
-            <div class="icon-box">←</div>
+            <div>
+                
+            </div>
 
             <div class="logo-area">
 
@@ -60,9 +62,9 @@ $query = mysqli_query($conn, "SELECT * FROM menu");
 
     <div class="filter">
         <button class="active">Semua</button>
-        <button>Kopi</button>
+        <button>Minuman</button>
         <button>Makanan</button>
-        <button>Snack</button>
+        <button>Cemilan</button>
     </div>
 
     <div class="menu-list">
@@ -84,11 +86,6 @@ $query = mysqli_query($conn, "SELECT * FROM menu");
                 <b>
                     <?php echo $data['nama_menu']; ?>
                 </b>
-
-                <p>
-                    <?php echo $data['deskripsi']; ?>
-                </p>
-
                 <span>
                     Rp <?php echo number_format($data['harga']); ?>
                 </span>
