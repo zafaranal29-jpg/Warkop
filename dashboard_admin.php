@@ -32,7 +32,7 @@
             <button class="menu-btn">Menu Pesanan</button>
         </a>
 
-        <a href="dp.html" style="text-decoration: none;">
+        <a href="data_penjualan.php" style="text-decoration: none;">
             <button class="menu-btn">Data Penjualan</button>
         </a>
 

@@ -154,7 +154,7 @@
         <p class="footer-note">Simpan struk ini sebagai bukti pengambilan</p>
       </div>
 
-      <a href="halaman-menu.html" class="btn-kembali">Kembali ke Menu</a>
+      <a href="menu.php" class="btn-kembali">Kembali ke Menu</a>
     </div>
 
     <script>

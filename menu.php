@@ -317,12 +317,14 @@ function filterMenu(kategori, btnId) {
 
                 <div class="action-popup">
 
+                <a href="checkout.php">
                     <button class="btn-pesan">
 
                         Pesan
 
                     </button>
 
+                    </a>
                 </div>
 
             </div>
