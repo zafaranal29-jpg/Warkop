@@ -1,32 +1,26 @@
 <?php
-include 'koneksi.php';
+include "koneksi.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Menangkap data dari fetch
-    $id_pesanan   = $_POST['id_pesanan'];
-    $no_meja      = $_POST['no_meja'];
-    $metode       = $_POST['metode_bayar'];
-    $total        = $_POST['total_harga'];
-    $nama         = $_POST['nama_user'];
-    $subtotal     = $_POST['subtotal'];
-    $ppn          = $_POST['ppn'];
-    $status       = $_POST['status_transaksi'];
-    
-    // Tanggal otomatis menggunakan waktu sekarang (WIB)
-    date_default_timezone_set('Asia/Jakarta');
-    $tanggal_pesan = date('Y-m-d H:i:s');
+// Menangkap data dari Fetch di Checkout
+$no_meja = $_POST['no_meja'];
+$nama_user = $_POST['nama_user'];
+$detail_pesanan = json_decode($_POST['detail_pesanan'], true);
+$status_default = "belum selesai";
 
-    // Query INSERT (id_transaksi tidak perlu dimasukkan karena biasanya Auto Increment)
-  // Urutan kolom di (sini) harus SAMA PERSIS dengan urutan variabel di VALUES('sini')
-// Query yang sudah gue benerin urutannya biar pas sama database lo
-    $sql = "INSERT INTO transaksi (id_pesanan, no_meja, tanggal_pesan, metode_bayar, total_harga, status_transaksi, nama_user, subtotal, ppn) 
-            VALUES ('$id_pesanan', '$no_meja', '$tanggal_pesan', '$metode', '$total', '$status', '$nama', '$subtotal', '$ppn')";
+if (!empty($detail_pesanan)) {
+    foreach ($detail_pesanan as $item) {
+        $nama_menu = mysqli_real_escape_string($conn, $item['nama']);
+        $jumlah = (int)$item['qty'];
 
-    if (mysqli_query($conn, $sql)) {
-        echo "Berhasil";
-    } else {
-        // Ini buat jaga-jaga kalau masih error, biar ketahuan rusaknya di mana
-        echo "Gagal: " . mysqli_error($conn);
+        // Masukkan nama_user ke dalam query agar admin tahu siapa yang pesan
+        // Jika di tabelmu kolomnya bernama 'nama_customer', sesuaikan namanya
+        $sql = "INSERT INTO pesanan (no_meja, nama_menu, jumlah, status_pesanan, nama_user) 
+                VALUES ('$no_meja', '$nama_menu', $jumlah, '$status_default', '$nama_user')";
+        
+        mysqli_query($conn, $sql);
     }
+    echo "Sukses";
+} else {
+    echo "Data Kosong";
 }
 ?>
