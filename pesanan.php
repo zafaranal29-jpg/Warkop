@@ -2,157 +2,109 @@
 include "koneksi.php";
 
 // ======================
-// BUTTON SELESAI
+// BUTTON SELESAI SEMUA
 // ======================
-if(isset($_GET['selesai'])){
-
-    $id = $_GET['selesai'];
+if(isset($_GET['selesai_semua'])){
+    $nama = $_GET['selesai_semua'];
+    $meja = $_GET['meja'];
 
     mysqli_query($conn, "
-        UPDATE pesanan
-        SET status_pesanan='selesai'
-        WHERE id_pesanan='$id'
+        UPDATE pesanan 
+        SET status_pesanan='selesai' 
+        WHERE nama_user='$nama' AND no_meja='$meja' AND status_pesanan='belum selesai'
     ");
 
     header("Location: pesanan.php");
     exit;
 }
 
-// ======================
-// FILTER
-// ======================
 $filter = isset($_GET['filter']) ? $_GET['filter'] : 'belum selesai';
 
-// ======================
-// QUERY PESANAN
-// ======================
 $query = mysqli_query($conn, "
-    SELECT *
+    SELECT 
+        MIN(id_pesanan) as id_pesanan, 
+        nama_user, 
+        no_meja, 
+        status_pesanan,
+        GROUP_CONCAT(CONCAT(nama_menu, ' (', jumlah, ')') SEPARATOR '<br>') as list_menu,
+        SUM(jumlah) as total_qty
     FROM pesanan
     WHERE status_pesanan='$filter'
+    GROUP BY nama_user, no_meja, status_pesanan
     ORDER BY id_pesanan DESC
 ");
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
     <meta charset="UTF-8">
-    <title>Admin Pesanan - Warkop SDB</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Pesanan - Warkop SDB</title>
     <link rel="stylesheet" href="pesanan.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-
 <body>
 
-<div class="container">
+    <header class="navbar">
+        <div class="nav-left">
+            <h1>Pesanan Masuk</h1>
+            <p>Monitoring Antrean Warkop SDB</p>
+        </div>
+        <a href="dashboard_admin.php" class="btn-back">
+            <i class="fas fa-arrow-left"></i> BACK
+        </a>
+    </header>
 
-    <!-- HEADER -->
-    <div class="header">
-
-        <div class="header-top">
-
-            <div class="icon-box">🔒</div>
-
-            <div class="logo-area">
-
-                <div class="logo">SDB</div>
-
-                <div>
-                    <b>ADMIN WARKOP SDB</b><br>
-                    <small>Daftar Pesanan Masuk</small>
-                </div>
-
-            </div>
-
-            <div class="icon-box">👨‍💼</div>
-
+    <main class="container">
+        <div class="filter-section">
+            <a href="?filter=belum selesai" class="btn-filter <?php echo ($filter == 'belum selesai') ? 'active' : ''; ?>">
+                <i class="fas fa-clock"></i> Belum Selesai
+            </a>
+            <a href="?filter=selesai" class="btn-filter <?php echo ($filter == 'selesai') ? 'active' : ''; ?>">
+                <i class="fas fa-check-circle"></i> Selesai
+            </a>
         </div>
 
-    </div>
-
-    <!-- FILTER -->
-    <div class="filter">
-
-        <a href="?filter=belum selesai">
-
-            <button class="<?php echo ($filter == 'belum selesai') ? 'active' : ''; ?>">
-
-                Belum Selesai
-
-            </button>
-
-        </a>
-
-        <a href="?filter=selesai">
-
-            <button class="<?php echo ($filter == 'selesai') ? 'active' : ''; ?>">
-
-                Selesai
-
-            </button>
-
-        </a>
-
-    </div>
-
-    <!-- LIST PESANAN -->
-    <div class="list">
-
-        <?php while($data = mysqli_fetch_assoc($query)) { ?>
-
-        <div class="card">
-
-            <div class="info">
-
-                <!-- ID PESANAN -->
-                <b>
-                    Pesanan #00<?php echo $data['id_pesanan']; ?>
-                </b>
-
-                <!-- NAMA MENU -->
-                <p>
-                    Menu :
-                    <?php echo $data['nama_menu']; ?>
-                </p>
-
-                <!-- JUMLAH -->
-                <p>
-                    Jumlah :
-                    <?php echo $data['jumlah']; ?>
-                </p>
-
-                <!-- NOMOR MEJA -->
-                <p>
-                    No Meja :
-                    <?php echo $data['no_meja']; ?>
-                </p>
-
-            </div>
-
-            <!-- BUTTON SELESAI -->
-            <?php if($data['status_pesanan'] == 'belum selesai') { ?>
-
-                <a href="?selesai=<?php echo $data['id_pesanan']; ?>">
-
-                    <button class="selesai-btn">
-                        Selesai
-                    </button>
-
-                </a>
-
-            <?php } ?>
-
-        </div>
-
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="80">ID</th>
+                        <th>Nama Customer</th>
+                        <th>Menu Pesanan</th>
+                        <th width="100">Jumlah</th>
+                        <th width="100">No. Meja</th>
+                        <th width="150" style="text-align: center;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+    <?php if(mysqli_num_rows($query) > 0) { ?>
+        <?php while($row = mysqli_fetch_assoc($query)) { ?>
+        <tr>
+            <td class="text-muted">#<?php echo $row['id_pesanan']; ?></td>
+            <td><strong class="user-name"><?php echo $row['nama_user']; ?></strong></td>
+            
+            <td style="line-height: 1.6; padding: 10px 15px;">
+                <?php echo $row['list_menu']; ?>
+            </td>
+            
+            <td><span class="qty-badge"><?php echo $row['total_qty']; ?> Porsi</span></td>
+            <td><span class="table-badge">Meja <?php echo $row['no_meja']; ?></span></td>
+            <td class="action-column">
+                <?php if($row['status_pesanan'] == 'belum selesai') { ?>
+                    <a href="?selesai_semua=<?php echo $row['nama_user']; ?>&meja=<?php echo $row['no_meja']; ?>" class="btn-done">Selesai</a>
+                <?php } else { ?>
+                    <span class="status-label">Selesai</span>
+                <?php } ?>
+            </td>
+        </tr>
         <?php } ?>
-
-    </div>
-
-</div>
+    <?php } ?>
+</tbody>
+            </table>
+        </div>
+    </main>
 
 </body>
 </html>

@@ -1,0 +1,225 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #0d1117;
+    color: #e6edf3;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* CONTAINER */
+.checkout-container {
+    width: 100%;
+    max-width: 400px;
+    background: #0d1117;
+    border: 8px solid #30363d;
+    border-radius: 35px;
+    padding: 20px;
+    min-height: 100vh;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.btn-back {
+    color: #58a6ff;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.header-text h1 {
+    font-size: 20px;
+    color: #58a6ff;
+}
+
+.header-text p {
+    font-size: 12px;
+    color: #8b949e;
+}
+
+/* CARD */
+.card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    font-size: 14px;
+    color: #58a6ff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ITEM PESANAN */
+.item-pesanan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #30363d;
+}
+
+.item-info strong {
+    display: block;
+    font-size: 14px;
+    color: #e6edf3;
+}
+
+.item-info p {
+    font-size: 12px;
+    color: #8b949e;
+}
+
+.item-harga {
+    font-weight: bold;
+    color: #58a6ff;
+}
+
+/* INPUT GROUP */
+.input-flex {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 11px;
+    color: #8b949e;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #58a6ff;
+}
+
+/* PAYMENT OPTIONS */
+.payment-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #0d1117;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #30363d;
+    cursor: pointer;
+}
+
+.payment-item input {
+    accent-color: #58a6ff;
+}
+
+/* RINCIAN PEMBAYARAN */
+.rincian-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.rincian-row span:first-child {
+    color: #8b949e;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #30363d;
+    margin: 10px 0;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.total-label {
+    font-weight: bold;
+    color: #e6edf3;
+}
+
+.total-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #58a6ff;
+}
+
+.btn-konfirmasi {
+    width: 100%;
+    padding: 15px;
+    background: #58a6ff;
+    color: #0d1117;
+    border: none;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.2s;
+}
+
+.btn-konfirmasi:hover {
+    background: #e6edf3;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #161b22;
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 25px;
+    width: 85%;
+    max-width: 350px;
+    text-align: center;
+    border: 1px solid #30363d;
+}
+
+.close-btn {
+    float: right;
+    color: #8b949e;
+    font-size: 24px;
+    cursor: pointer;
+}
