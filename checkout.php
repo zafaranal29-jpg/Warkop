@@ -36,11 +36,11 @@
             <section class="card">
                 <div class="input-group">
                     <label>Nama Pemesan *</label>
-                    <input type="text" id="nama" placeholder="Masukkan nama Anda" />
+                    <input type="text" id="nama_user" placeholder="Masukkan nama Anda" />
                 </div>
                 <div class="input-group">
                     <label>Nomor Meja *</label>
-                    <input type="number" id="meja" placeholder="Nomor meja" />
+                    <input type="number" id="no_meja" placeholder="Nomor meja" />
                 </div>
             </section>
 
@@ -77,7 +77,7 @@
                 <hr />
                 <div class="row total">
                     <span>Total</span>
-                    <strong id="total-akhir">Rp 0</strong>
+                    <strong id="total_harga">Rp 0</strong>
                 </div>
                 <button class="btn-konfirmasi" id="btn-konfirmasi">
                     Konfirmasi Pesanan - <span id="total-btn">Rp 0</span>
@@ -133,7 +133,7 @@
 
         document.getElementById("subtotal").innerText = `Rp ${subtotal.toLocaleString("id-ID")}`;
         document.getElementById("ppn").innerText = `Rp ${ppn.toLocaleString("id-ID")}`;
-        document.getElementById("total-akhir").innerText = `Rp ${total.toLocaleString("id-ID")}`;
+        document.getElementById("total_harga").innerText = `Rp ${total.toLocaleString("id-ID")}`;
         document.getElementById("total-btn").innerText = `Rp ${total.toLocaleString("id-ID")}`;
     }
 
@@ -146,9 +146,12 @@
 
     btnKonfirmasi.addEventListener("click", function() {
         // Ambil input dari user (ID: nama, meja)
-        const namaUser = document.getElementById("nama").value;
-        const mejaUser = document.getElementById("meja").value;
+        const namaUser = document.getElementById("nama_user").value;
+        const mejaUser = document.getElementById("no_meja").value;
+
+        // --- PERBAIKAN: MENGAMBIL METODE PEMBAYARAN ---
         const metodeInput = document.querySelector('input[name="payment"]:checked');
+        const metode = metodeInput ? metodeInput.value : "Belum memilih";
 
         // Validasi
         if (!namaUser || !mejaUser) {
@@ -156,18 +159,17 @@
             return;
         }
 
-        // Ambil nilai metode dan total (ID: total-akhir)
-        const metode = metodeInput.value;
-        const totalHargaRaw = document.getElementById("total-akhir").innerText;
-        const totalHarga = totalHargaRaw.replace(/[^0-9]/g, ""); // Hanya ambil angka
+        // Ambil nilai total (ID: total-akhir)
+        const totalHargaRaw = document.getElementById("total_harga").innerText;
+        const totalHarga = totalHargaRaw.replace(/[^0-9]/g, ""); // Hanya ambil angka murni
         const keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
 
         // Simpan ke localStorage untuk struk
-        localStorage.setItem("nomorMeja", mejaUser);
-        localStorage.setItem("namaPemesan", namaUser);
-        localStorage.setItem("waktuTransaksi", new Date().toLocaleString("id-ID"));
+        localStorage.setItem("no_meja", mejaUser);
+        localStorage.setItem("nama_user", namaUser);
+        localStorage.setItem("waktu_cetak", new Date().toLocaleString("id-ID"));
 
-        // --- PROSES KIRIM KE DATABASE ---
+        // --- PROSES KIRIM KE DATABASE (Sesuai kolom metode_bayar) ---
         console.log("Mengirim data ke database...");
         fetch('proses_simpan_checkout.php', {
                 method: 'POST',
@@ -175,10 +177,10 @@
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    'nama': namaUser,
-                    'meja': mejaUser,
-                    'metode': metode,
-                    'total': totalHarga,
+                    'nama_user': namaUser,
+                    'no_meja': mejaUser,
+                    'metode_bayar': metode, // Dikirim ke $_POST['metode'] di PHP
+                    'total_harga': totalHarga,
                     'pesanan': JSON.stringify(keranjang)
                 })
             })
@@ -186,7 +188,7 @@
             .then(res => console.log("Respon Server:", res))
             .catch(err => console.error("Gagal simpan database:", err));
 
-        // Logika konten Pop-up Modal
+        // Logika konten Pop-up Modal berdasarkan pilihan metode
         const imgInstruksi = document.getElementById("img-instruksi");
         const teksInstruksi = document.getElementById("teks-instruksi");
 
