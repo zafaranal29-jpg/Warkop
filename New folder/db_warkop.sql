@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Bulan Mei 2026 pada 14.21
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: May 10, 2026 at 04:41 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
@@ -34,10 +34,17 @@ CREATE TABLE `admin` (
   `nama_user` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `username`, `password`, `nama_user`) VALUES
+(1, 'bintang', '123', 'bintangss');
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `invoice`
+-- Table structure for table `invoice`
 --
 
 CREATE TABLE `invoice` (
@@ -50,7 +57,7 @@ CREATE TABLE `invoice` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kategori_menu`
+-- Table structure for table `kategori_menu`
 --
 
 CREATE TABLE `kategori_menu` (
@@ -59,7 +66,7 @@ CREATE TABLE `kategori_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `kategori_menu`
+-- Dumping data for table `kategori_menu`
 --
 
 INSERT INTO `kategori_menu` (`id_kategori`, `nama_kategori`) VALUES
@@ -70,7 +77,7 @@ INSERT INTO `kategori_menu` (`id_kategori`, `nama_kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `menu`
+-- Table structure for table `menu`
 --
 
 CREATE TABLE `menu` (
@@ -84,38 +91,52 @@ CREATE TABLE `menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `menu`
+-- Dumping data for table `menu`
 --
 
 INSERT INTO `menu` (`id_menu`, `id_kategori`, `nama_menu`, `harga`, `stok`, `rating`, `status`) VALUES
-(2, 2, 'es teh', 10000, 20, 0.0, 'aktif');
+(2, 2, 'es teh', 10000, 20, 0.0, 'aktif'),
+(3, 2, 'kopi', 10000, 5, 0.0, 'aktif');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pesanan`
+-- Table structure for table `pesanan`
 --
 
 CREATE TABLE `pesanan` (
   `id_pesanan` int(11) NOT NULL,
   `no_meja` varchar(10) NOT NULL,
+  `nama_user` varchar(100) NOT NULL,
   `nama_menu` varchar(100) DEFAULT NULL,
   `jumlah` int(11) NOT NULL,
-  `status_pesanan` varchar(50) DEFAULT 'belum selesai'
+  `status_pesanan` varchar(50) DEFAULT 'belum selesai',
+  `id_transaksi` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pesanan`
+-- Dumping data for table `pesanan`
 --
 
-INSERT INTO `pesanan` (`id_pesanan`, `no_meja`, `nama_menu`, `jumlah`, `status_pesanan`) VALUES
-(1, '1', NULL, 2, 'belum selesai'),
-(2, '1', 'nasi uduk', 2, 'selesai');
+INSERT INTO `pesanan` (`id_pesanan`, `no_meja`, `nama_user`, `nama_menu`, `jumlah`, `status_pesanan`, `id_transaksi`) VALUES
+(1, '1', '', NULL, 2, 'belum selesai', NULL),
+(2, '1', '', 'nasi uduk', 2, 'selesai', NULL),
+(3, '2', 'bintang', 'kopi', 2, 'belum selesai', NULL),
+(4, '2', 'bintang', 'es teh', 2, 'belum selesai', NULL),
+(5, '5', 'raka', 'kopi', 1, 'belum selesai', NULL),
+(6, '6', 'nuness', 'kopi', 1, 'belum selesai', NULL),
+(7, '6', 'nuness', 'es teh', 1, 'belum selesai', NULL),
+(8, '1', 'skhaaa', 'kopi', 3, 'belum selesai', NULL),
+(9, '1', 'skhaaa', 'es teh', 1, 'belum selesai', NULL),
+(10, '3', 'aril', 'kopi', 5, 'belum selesai', 19),
+(11, '12', 'mesii', 'kopi', 1, 'belum selesai', NULL),
+(12, '12', 'mesii', 'es teh', 4, 'belum selesai', NULL),
+(13, '2', 'dans', 'kopi', 3, 'belum selesai', 22);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `transaksi`
+-- Table structure for table `transaksi`
 --
 
 CREATE TABLE `transaksi` (
@@ -132,111 +153,117 @@ CREATE TABLE `transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `transaksi`
+-- Dumping data for table `transaksi`
 --
 
 INSERT INTO `transaksi` (`id_transaksi`, `id_pesanan`, `no_meja`, `tanggal_pesan`, `metode_bayar`, `total_harga`, `status_transaksi`, `nama_user`, `subtotal`, `ppn`) VALUES
 (13, 0, '04', '2026-05-10 12:14:39', 'Tunai', 13200, '', 'bintang', 12000.00, 1200.00),
 (14, 0, '04', '2026-05-10 12:15:56', 'Tunai', 13200, '', 'bintang', 12000.00, 1200.00),
 (15, 0, '07', '2026-05-10 12:17:43', 'Tunai', 13200, '', 'japran', 12000.00, 1200.00),
-(16, 0, '07', '2026-05-10 12:19:37', 'Tunai', 13200, '', 'japran', 12000.00, 1200.00);
+(16, 0, '07', '2026-05-10 12:19:37', 'Tunai', 13200, '', 'japran', 12000.00, 1200.00),
+(17, NULL, '6', '2026-05-10 14:03:10', 'Tunai', 22000, 'Lunas', 'nuness', 20000.00, NULL),
+(18, NULL, '1', '2026-05-10 14:19:54', 'Tunai', 44000, 'Lunas', 'skhaaa', 40000.00, NULL),
+(19, NULL, '3', '2026-05-10 14:23:23', 'Tunai', 55000, 'Lunas', 'aril', 50000.00, NULL),
+(20, NULL, '12', '2026-05-10 14:31:17', 'Tunai', 55000, 'Lunas', 'mesii', 50000.00, NULL),
+(21, NULL, '5', '2026-05-10 14:35:25', 'Tunai', 66000, 'Lunas', 'danu', 60000.00, NULL),
+(22, NULL, '2', '2026-05-10 14:40:11', 'Tunai', 33000, 'Lunas', 'dans', 30000.00, NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `invoice`
+-- Indexes for table `invoice`
 --
 ALTER TABLE `invoice`
   ADD PRIMARY KEY (`id_invoice`),
   ADD KEY `id_transaksi` (`id_transaksi`);
 
 --
--- Indeks untuk tabel `kategori_menu`
+-- Indexes for table `kategori_menu`
 --
 ALTER TABLE `kategori_menu`
   ADD PRIMARY KEY (`id_kategori`);
 
 --
--- Indeks untuk tabel `menu`
+-- Indexes for table `menu`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id_menu`),
   ADD KEY `id_kategori` (`id_kategori`);
 
 --
--- Indeks untuk tabel `pesanan`
+-- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
   ADD PRIMARY KEY (`id_pesanan`);
 
 --
--- Indeks untuk tabel `transaksi`
+-- Indexes for table `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
   ADD KEY `id_pesanan` (`id_pesanan`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `invoice`
+-- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
   MODIFY `id_invoice` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `kategori_menu`
+-- AUTO_INCREMENT for table `kategori_menu`
 --
 ALTER TABLE `kategori_menu`
   MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `menu`
+-- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `pesanan`
+-- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT untuk tabel `transaksi`
+-- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `invoice`
+-- Constraints for table `invoice`
 --
 ALTER TABLE `invoice`
   ADD CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`);
 
 --
--- Ketidakleluasaan untuk tabel `menu`
+-- Constraints for table `menu`
 --
 ALTER TABLE `menu`
   ADD CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`id_kategori`) REFERENCES `kategori_menu` (`id_kategori`);

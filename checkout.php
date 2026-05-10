@@ -174,7 +174,7 @@ btnKonfirmasi.addEventListener("click", function() {
 
 closeBtn.onclick = function() {
     localStorage.removeItem("keranjang_warkop");
-    window.location.href = "halaman struk.php";
+    window.location.href = "halaman_struk.php";
 };
 </script>
 </body>
