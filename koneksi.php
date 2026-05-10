@@ -8,14 +8,12 @@ $pass_db = "";
 $db_name = "db_warkop"; 
 
 /* membuat koneksi */
-$conn = new mysqli($hostname, $user_db, $pass_db);
 
-/* cek koneksi */
-if ($conn->connect_error) {
-
-    die("Connection failed : " . $conn->connect_error);
-
-} else {
+$conn = mysqli_connect("localhost", "root", "", "db_warkop");
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}
+ else {
 
     mysqli_select_db($conn, $db_name);
 

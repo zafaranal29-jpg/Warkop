@@ -68,19 +68,19 @@
                 <h3>Rincian Pembayaran</h3>
                 <div class="row">
                     <span>Subtotal</span>
-                    <span id="subtotal">Rp 0</span>
+                    <span id="subtotal">0</span>
                 </div>
                 <div class="row">
                     <span>PPN (10%)</span>
-                    <span id="ppn">Rp 0</span>
+                    <span id="ppn">0</span>
                 </div>
                 <hr />
                 <div class="row total">
                     <span>Total</span>
-                    <strong id="total_harga">Rp 0</strong>
+                    <strong id="total_harga"> 0</strong>
                 </div>
                 <button class="btn-konfirmasi" id="btn-konfirmasi">
-                    Konfirmasi Pesanan - <span id="total-btn">Rp 0</span>
+                    Konfirmasi Pesanan - <span id="total-btn"> 0</span>
                 </button>
             </section>
         </main>
@@ -98,34 +98,31 @@
     </div>
 
 
+
     <script>
-    // 1. Fungsi untuk menampilkan daftar pesanan dari localStorage
     function renderCheckout() {
         const dummyPesanan = [{
             nama: "Kopi Royal",
             jumlah: 1,
             harga: 12000
         }];
-        const keranjang = JSON.parse(localStorage.getItem("keranjang")) || dummyPesanan;
-        const daftarPesananElemen = document.getElementById("daftar-pesanan");
-
+        const
+            keranjang = JSON.parse(localStorage.getItem("keranjang")) || dummyPesanan;
+        const
+            daftarPesananElemen = document.getElementById("daftar-pesanan");
         let subtotal = 0;
         daftarPesananElemen.innerHTML = "";
-
         keranjang.forEach((item) => {
             const totalHargaItem = item.harga * item.jumlah;
             subtotal += totalHargaItem;
-
             daftarPesananElemen.innerHTML += `
-        <div class="item-pesanan">
-            <div class="item-info">
-                <strong>${item.nama}</strong>
-                <p>${item.jumlah} x Rp ${item.harga.toLocaleString("id-ID")}</p>
-            </div>
-            <div class="item-harga">
-                Rp ${totalHargaItem.toLocaleString("id-ID")}
-            </div>
-        </div>`;
+            <div class="item-pesanan">
+                <div class="item-info">
+                    <strong>${item.nama}</strong>
+                    <p>${item.jumlah} x Rp ${item.harga.toLocaleString("id-ID")}</p>
+                </div>
+                <div class="item-harga">Rp ${totalHargaItem.toLocaleString("id-ID")}</div>
+            </div>`;
         });
 
         const ppn = subtotal * 0.1;
@@ -139,66 +136,62 @@
 
     document.addEventListener("DOMContentLoaded", renderCheckout);
 
-    // 2. Logika Modal dan Konfirmasi Pembayaran
     const modal = document.getElementById("modal-pembayaran");
     const closeBtn = document.querySelector(".close-btn");
     const btnKonfirmasi = document.getElementById("btn-konfirmasi");
 
     btnKonfirmasi.addEventListener("click", function() {
-        // Ambil input dari user (ID: nama, meja)
         const namaUser = document.getElementById("nama_user").value;
         const mejaUser = document.getElementById("no_meja").value;
-
-        // --- PERBAIKAN: MENGAMBIL METODE PEMBAYARAN ---
         const metodeInput = document.querySelector('input[name="payment"]:checked');
-        const metode = metodeInput ? metodeInput.value : "Belum memilih";
+        const metode = metodeInput ? metodeInput.value : "Tunai";
 
-        // Validasi
         if (!namaUser || !mejaUser) {
             alert("Mohon isi Nama dan Nomor Meja!");
             return;
         }
 
-        // Ambil nilai total (ID: total-akhir)
-        const totalHargaRaw = document.getElementById("total_harga").innerText;
-        const totalHarga = totalHargaRaw.replace(/[^0-9]/g, ""); // Hanya ambil angka murni
+        // Hitung ulang data untuk database
+        const subtotalRaw = document.getElementById("subtotal").innerText.replace(/[^0-9]/g, "");
+        const ppnRaw = document.getElementById("ppn").innerText.replace(/[^0-9]/g, "");
+        const totalHargaRaw = document.getElementById("total_harga").innerText.replace(/[^0-9]/g, "");
         const keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
 
-        // Simpan ke localStorage untuk struk
-        localStorage.setItem("no_meja", mejaUser);
-        localStorage.setItem("nama_user", namaUser);
-        localStorage.setItem("waktu_cetak", new Date().toLocaleString("id-ID"));
+        // Generate ID Pesanan sederhana (Contoh: Warkop-12345)
+        const idPesananRandom = "SDB-" + Math.floor(Math.random() * 10000);
 
-        // --- PROSES KIRIM KE DATABASE (Sesuai kolom metode_bayar) ---
-        console.log("Mengirim data ke database...");
+        // Kirim data lengkap ke PHP
         fetch('proses_simpan_checkout.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    'nama_user': namaUser,
+                    'id_pesanan': idPesananRandom,
                     'no_meja': mejaUser,
-                    'metode_bayar': metode, // Dikirim ke $_POST['metode'] di PHP
-                    'total_harga': totalHarga,
-                    'pesanan': JSON.stringify(keranjang)
+                    'metode_bayar': metode,
+                    'total_harga': totalHargaRaw,
+                    'nama_user': namaUser,
+                    'subtotal': subtotalRaw,
+                    'ppn': ppnRaw,
+                    'detail_pesanan': JSON.stringify(keranjang),
+                    'status_transaksi': 'Berhasil' // Default status
                 })
             })
             .then(response => response.text())
             .then(res => console.log("Respon Server:", res))
-            .catch(err => console.error("Gagal simpan database:", err));
+            .catch(err => console.error("Error Database:", err));
 
-        // Logika konten Pop-up Modal berdasarkan pilihan metode
+        // Logic Modal
         const imgInstruksi = document.getElementById("img-instruksi");
         const teksInstruksi = document.getElementById("teks-instruksi");
-
         if (metode === "Tunai") {
             imgInstruksi.src = "9902534.jpg";
             teksInstruksi.innerText = "Silahkan menuju kasir";
         } else if (metode === "QRIS") {
             imgInstruksi.src = "YjQnEfvec3Xgemn9e4syHf.png";
             teksInstruksi.innerText = "Silahkan scan barcode";
-        } else if (metode === "Debit") {
+        } else {
             imgInstruksi.src = "gambar-mesin-edc.png";
             teksInstruksi.innerText = "Silahkan menuju kasir";
         }
@@ -206,17 +199,8 @@
         modal.style.display = "block";
     });
 
-    // 3. Fungsi Menutup Modal & Pindah ke Struk
     closeBtn.onclick = function() {
-        modal.style.display = "none";
         window.location.href = "halaman struk.php";
-    };
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-            window.location.href = "halaman struk.php";
-        }
     };
     </script>
 
